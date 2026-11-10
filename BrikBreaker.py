@@ -119,3 +119,54 @@ class Paddle(GameObject):
                 self.ball.move(offset, 0)
 
 
+# ==========================================
+# CLASS BRICK
+# Mengatur warna dan ketahanan brick
+# ==========================================
+
+class Brick(GameObject):
+
+    # TAMBAHAN: Variasi enam warna brick
+    COLORS = {
+        1: '#FF4757',  # Merah
+        2: '#1E90FF',  # Biru
+        3: '#FFA502',  # Oranye
+        4: '#2ED573',  # Hijau
+        5: '#A55EEA',  # Ungu
+        6: '#FF6B81'   # Pink
+    }
+
+    def __init__(self, canvas, x, y, hits):
+        self.width = 75
+        self.height = 20
+        self.hits = hits
+
+        color = Brick.COLORS[hits]
+
+        # TAMBAHAN: Brick memiliki garis tepi putih
+        item = canvas.create_rectangle(
+            x - self.width / 2,
+            y - self.height / 2,
+            x + self.width / 2,
+            y + self.height / 2,
+            fill=color,
+            outline='white',
+            width=2,
+            tags='brick'
+        )
+
+        super(Brick, self).__init__(canvas, item)
+
+    def hit(self):
+        self.hits -= 1
+
+        if self.hits <= 0:
+            self.delete()
+        else:
+            # Warna brick berubah sesuai sisa ketahanan
+            self.canvas.itemconfig(
+                self.item,
+                fill=Brick.COLORS[self.hits]
+            )
+
+
